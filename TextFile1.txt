@@ -1,0 +1,5 @@
+CQRS
+https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs
+
+Mediator Pattern
+https://www.geeksforgeeks.org/mediator-design-pattern/
