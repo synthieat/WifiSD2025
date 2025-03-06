@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 
 namespace SD.Core.Entities.Movies
 {
+    public enum Ratings : byte
+    {
+        Unrated = 0,
+        Bad = 10,
+        Medium = 20,
+        Great = 30
+    }
+
     public abstract class MovieBase
     {
         [Key] /* Nicht mehr notwendig by GUID */
@@ -16,10 +24,12 @@ namespace SD.Core.Entities.Movies
         [Required]
         public virtual string Title { get; set; }   
 
-        public int GenreId { get; set; }
-        public string MediumTypeCode { get; set; }
+        public virtual int GenreId { get; set; }
+        public virtual string? MediumTypeCode { get; set; }
 
-        public decimal Price { get; set; }
-        public DateTime ReleaseDate { get; set; }
+        public virtual decimal Price { get; set; }
+        public virtual DateTime ReleaseDate { get; set; }
+
+        public virtual Ratings Rating { get; set; } = 0;
     }
 }

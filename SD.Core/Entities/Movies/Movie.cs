@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SD.Core.Entities.Movies
 {
+    [Table(name: nameof(Movie) + "s")]
     public class Movie : MovieBase, IEntity
     {
         public Genre Genre { get; set; }
