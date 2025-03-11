@@ -1,0 +1,56 @@
+﻿using MediatR;
+using SD.Core.Application.Queries;
+using SD.Core.Application.Results;
+using SD.Core.Entities.Movies;
+using SD.Core.Repositories.Movies;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+
+namespace SD.Application.Movies
+{
+    public class MovieQueryHandler : IRequestHandler<GetMovieDtoQuery, MovieDto>,
+                                     IRequestHandler<GetMovieDtosQuery, IEnumerable<MovieDto>>
+    {
+        protected readonly IMovieRepository movieRepository;
+        public MovieQueryHandler(IMovieRepository movieRepository)
+        {
+            this.movieRepository = movieRepository; 
+        }
+
+
+        public async Task<MovieDto> Handle(GetMovieDtoQuery request, 
+                                           CancellationToken cancellationToken)
+        {
+            var result = await this.GetMovieQueryWithNavigationPropertiesInitialized()
+                                              .Where(w => w.Id == request.Id)
+                                              .Select(s => MovieDto.MapFrom(s))
+                                              .FirstOrDefaultAsync(cancellationToken);
+
+            return result;
+        }
+
+        public async Task<IEnumerable<MovieDto>> Handle(GetMovieDtosQuery request, CancellationToken cancellationToken)
+        {
+            var movieQuery = this.GetMovieQueryWithNavigationPropertiesInitialized()
+                                                 .Where(w => (!request.GenreId.HasValue || w.GenreId == request.GenreId) &&
+                                                       (string.IsNullOrWhiteSpace(request.MediumTypeCode) || w.MediumTypeCode.Contains(request.MediumTypeCode)))
+                                                 .Take(request.Take) /* Pagination Take / Skip */
+                                                 .Skip(request.Skip);
+
+            var result = await movieQuery.Select(s => MovieDto.MapFrom(s))
+                                         .ToListAsync(cancellationToken);
+
+            return result;
+        }
+
+        private IQueryable<Movie> GetMovieQueryWithNavigationPropertiesInitialized()
+        {
+            return this.movieRepository.QueryFrom<Movie>().Include(i => i.Genre).Include(i => i.MediumType);
+        }
+    }
+}
