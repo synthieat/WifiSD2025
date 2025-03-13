@@ -77,8 +77,8 @@ namespace SD.Persistence.Repositories.Base
         #endregion
 
         #region [U]PDATE
-
-        public T Update<T>(Task entity, object key, bool saveImmediately = false)
+                
+        public T Update<T>(T entity, object key, bool saveImmediately = false)
             where T : class, IEntity
         {
             if (entity == null)
@@ -100,7 +100,7 @@ namespace SD.Persistence.Repositories.Base
             return toUpdate;
         }
 
-        public async Task<T> UpdateAsync<T>(Task entity, object key, bool saveImmediately = false, CancellationToken cancellationToken = default)
+        public async Task<T> UpdateAsync<T>(T entity, object key, bool saveImmediately = false, CancellationToken cancellationToken = default)
            where T : class, IEntity
         {
             if (entity == null)
@@ -142,6 +142,26 @@ namespace SD.Persistence.Repositories.Base
             }
         }
 
+        public void RemoveByKey<T>(object key, bool saveImmediately = false)
+            where T : class, IEntity
+        {
+            if(key == null)
+            {
+                return;
+            }
+
+            var toRemove = this.movieDbContext.Set<T>().Find(key);
+            if(toRemove != null)
+            {
+                this.movieDbContext.Remove(toRemove);
+
+                if (saveImmediately)
+                {
+                    this.movieDbContext.SaveChanges();
+                }
+            }
+        }
+
         public async Task RemoveAsync<T>(T entity, bool saveImmediately = false, CancellationToken cancellationToken = default)
             where T : class, IEntity
         {
@@ -158,6 +178,25 @@ namespace SD.Persistence.Repositories.Base
             }
         }
 
+        public async Task RemoveByKeyAsync<T>(object key, bool saveImmediately = false, CancellationToken cancellationToken = default)
+           where T : class, IEntity
+        {
+            if (key == null)
+            {
+                return;
+            }
+
+            var toRemove = await this.movieDbContext.Set<T>().FindAsync(key, cancellationToken);
+            if (toRemove != null)
+            {
+                this.movieDbContext.Remove(toRemove);
+
+                if (saveImmediately)
+                {
+                    await this.movieDbContext.SaveChangesAsync(cancellationToken);
+                }
+            }
+        }
 
         #endregion
 

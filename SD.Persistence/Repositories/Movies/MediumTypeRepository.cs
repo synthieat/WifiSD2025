@@ -1,3 +1,4 @@
+using SD.Core.Attributes;
 using SD.Core.Repositories.Movies;
 using SD.Persistence.Repositories.Base;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace SD.Persistence.Repositories.Movies
 {
+    [MapServiceDependency(nameof(MediumTypeRepository))]
     public class MediumTypeRepository : BaseRepository, IMediumTypeRepository
     {
     }

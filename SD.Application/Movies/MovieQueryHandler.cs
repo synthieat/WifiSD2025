@@ -10,11 +10,15 @@ using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using SD.Core.Attributes;
 
 namespace SD.Application.Movies
 {
+    [MapServiceDependency(nameof(MovieQueryHandler))]
     public class MovieQueryHandler : IRequestHandler<GetMovieDtoQuery, MovieDto>,
-                                     IRequestHandler<GetMovieDtosQuery, IEnumerable<MovieDto>>
+                                     IRequestHandler<GetMovieDtosQuery, IEnumerable<MovieDto>>,
+                                     IRequestHandler<GetGernesQuery, IEnumerable<Genre>>,
+                                     IRequestHandler<GetMediumTypesQuery, IEnumerable<MediumType>>
     {
         protected readonly IMovieRepository movieRepository;
         public MovieQueryHandler(IMovieRepository movieRepository)
@@ -46,6 +50,16 @@ namespace SD.Application.Movies
                                          .ToListAsync(cancellationToken);
 
             return result;
+        }
+
+        public async Task<IEnumerable<Genre>> Handle(GetGernesQuery request, CancellationToken cancellationToken)
+        {
+            return await this.movieRepository.QueryFrom<Genre>().ToListAsync(cancellationToken);
+        }
+
+        public async Task<IEnumerable<MediumType>> Handle(GetMediumTypesQuery request, CancellationToken cancellationToken)
+        {
+            return await this.movieRepository.QueryFrom<MediumType>().ToListAsync(cancellationToken);
         }
 
         private IQueryable<Movie> GetMovieQueryWithNavigationPropertiesInitialized()
