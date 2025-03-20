@@ -109,6 +109,7 @@ namespace SD.Persistence.Repositories.Base
             }
 
             var toUpdate = await this.movieDbContext.Set<T>().FindAsync(key, cancellationToken);
+         
             if (toUpdate != null)
             {
                 this.movieDbContext.Entry(toUpdate).CurrentValues.SetValues(entity);

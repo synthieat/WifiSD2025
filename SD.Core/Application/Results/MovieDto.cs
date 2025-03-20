@@ -20,7 +20,7 @@ namespace SD.Core.Application.Results
                 Title = movie.Title,
                 ReleaseDate = movie.ReleaseDate,
                 GenreId = movie.GenreId,            
-                GenreName = movie.Genre != null ? movie.Genre.Name : string.Empty,   
+                GenreName = movie.Genre != null ? movie.Genre.Name : string.Empty,    
                 MediumTypeCode = movie.MediumTypeCode,
                 MediumTypeName = movie.MediumType != null ? movie.MediumType.Name : string.Empty,
                 Rating = movie.Rating,

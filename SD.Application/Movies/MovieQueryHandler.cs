@@ -42,7 +42,8 @@ namespace SD.Application.Movies
         {
             var movieQuery = this.GetMovieQueryWithNavigationPropertiesInitialized()
                                                  .Where(w => (!request.GenreId.HasValue || w.GenreId == request.GenreId) &&
-                                                       (string.IsNullOrWhiteSpace(request.MediumTypeCode) || w.MediumTypeCode.Contains(request.MediumTypeCode)))
+                                                       (string.IsNullOrWhiteSpace(request.MediumTypeCode) || w.MediumTypeCode.Contains(request.MediumTypeCode)) &&
+                                                       (string.IsNullOrWhiteSpace(request.SearchText) || w.Title.Contains(request.SearchText)))
                                                  .Take(request.Take) /* Pagination Take / Skip */
                                                  .Skip(request.Skip);
 
