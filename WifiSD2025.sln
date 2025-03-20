@@ -13,6 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{F0032C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{882C088A-7123-459B-B507-1E730FCF1D12}"
 	ProjectSection(SolutionItems) = preProject
+		Stundenplan 80600.pdf = Stundenplan 80600.pdf
+		PPT_WebDeveloper_Architekturen.pdf = PPT_WebDeveloper_Architekturen.pdf
+		PPT_WebDeveloper_Schnittstellen.pdf = PPT_WebDeveloper_Schnittstellen.pdf
 		TextFile1.txt = TextFile1.txt
 	EndProjectSection
 EndProject
