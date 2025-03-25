@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SD.Core.Application.Commands;
 using SD.Core.Application.Queries;
@@ -10,6 +11,7 @@ namespace SD.WS.Controllers
 {
     [ApiController]
     [Route("[Controller]")]
+    [Authorize]
     public class MovieController : MediatRBaseController
     {
         public MovieController(){}
@@ -21,6 +23,7 @@ namespace SD.WS.Controllers
             return await base.Mediator.Send(query, cancellationToken);
         }
 
+        [AllowAnonymous]
         [HttpGet(nameof(MovieDto))]
         public async Task<IEnumerable<MovieDto>> GetMovieDtos([FromQuery] GetMovieDtosQuery query , CancellationToken cancellationToken)
         {

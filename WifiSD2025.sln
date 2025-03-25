@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{F0032C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{882C088A-7123-459B-B507-1E730FCF1D12}"
 	ProjectSection(SolutionItems) = preProject
-		Stundenplan 80600.pdf = Stundenplan 80600.pdf
 		PPT_WebDeveloper_Architekturen.pdf = PPT_WebDeveloper_Architekturen.pdf
 		PPT_WebDeveloper_Schnittstellen.pdf = PPT_WebDeveloper_Schnittstellen.pdf
+		Stundenplan 80600.pdf = Stundenplan 80600.pdf
 		TextFile1.txt = TextFile1.txt
 	EndProjectSection
 EndProject
@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SD.Application", "SD.Applic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SD.WS", "SD.WS\SD.WS.csproj", "{18DFAED6-A2F1-4E41-A7C6-FC3AF4F099F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SD.Common", "SD.Common\SD.Common.csproj", "{C7CF98EC-5BCD-4D76-A76C-6B170D029781}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SD.Common", "SD.Common\SD.Common.csproj", "{C7CF98EC-5BCD-4D76-A76C-6B170D029781}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SD.Resources", "SD.Resources\SD.Resources.csproj", "{49EE422D-45BC-45BC-BF4B-629C6D14D8FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{C7CF98EC-5BCD-4D76-A76C-6B170D029781}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7CF98EC-5BCD-4D76-A76C-6B170D029781}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7CF98EC-5BCD-4D76-A76C-6B170D029781}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49EE422D-45BC-45BC-BF4B-629C6D14D8FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49EE422D-45BC-45BC-BF4B-629C6D14D8FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49EE422D-45BC-45BC-BF4B-629C6D14D8FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49EE422D-45BC-45BC-BF4B-629C6D14D8FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{3C9D1683-A52A-49B7-AF67-7CE135A19254} = {1F8686BF-F5DE-4E03-8939-AA50210BA38F}
 		{18DFAED6-A2F1-4E41-A7C6-FC3AF4F099F0} = {EF540145-341B-4D85-BAEE-D9A04526D005}
 		{C7CF98EC-5BCD-4D76-A76C-6B170D029781} = {F0032CD0-7722-4311-BD8F-06EC995B3B77}
+		{49EE422D-45BC-45BC-BF4B-629C6D14D8FA} = {F0032CD0-7722-4311-BD8F-06EC995B3B77}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69759232-EE3A-4324-9413-A04B0BC01A39}
