@@ -11,6 +11,7 @@ namespace SD.Core.Application.Results
     {
         public string GenreName { get; set; }
         public string MediumTypeName { get; set; }  
+        public string? LocalizedRating { get; set; }
 
         public static MovieDto MapFrom(Movie movie)
         {

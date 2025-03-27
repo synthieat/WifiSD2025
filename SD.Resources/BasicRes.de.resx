@@ -129,4 +129,7 @@
   <data name="Ratings_30" xml:space="preserve">
     <value>Großartig</value>
   </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Willkommen</value>
+  </data>
 </root>

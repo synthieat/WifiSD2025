@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using SD.Core.Attributes;
+using SD.Common.Extensions;
 
 namespace SD.Application.Movies
 {
@@ -35,6 +36,11 @@ namespace SD.Application.Movies
                                               .Select(s => MovieDto.MapFrom(s))
                                               .FirstOrDefaultAsync(cancellationToken);
 
+            if(result != null)
+            {
+                result.LocalizedRating = result.Rating.GetDescription();
+            }
+
             return result;
         }
 
@@ -49,6 +55,13 @@ namespace SD.Application.Movies
 
             var result = await movieQuery.Select(s => MovieDto.MapFrom(s))
                                          .ToListAsync(cancellationToken);
+
+            result.ForEach(r =>
+            {                
+                r.LocalizedRating = r.Rating.GetDescription();
+            });
+
+            //var LocalizedRatingEnum = EnumExtension.EnumToList<Ratings>();
 
             return result;
         }
