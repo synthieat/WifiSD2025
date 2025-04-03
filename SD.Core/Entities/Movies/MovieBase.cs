@@ -27,16 +27,27 @@ namespace SD.Core.Entities.Movies
         [Key] /* Nicht mehr notwendig by GUID */
         public virtual Guid Id { get; set; }
 
-        [MaxLength(128), MinLength(2)]
-        [Required]
-        public virtual string Title { get; set; }   
+        [MaxLength(128, ErrorMessageResourceName = "MaxLength", ErrorMessageResourceType = typeof(BasicRes)), 
+         MinLength(2, ErrorMessageResourceName = "MinLength", ErrorMessageResourceType = typeof(BasicRes))]
+        [Required(ErrorMessageResourceName = "IsRequired", ErrorMessageResourceType = typeof(BasicRes))]
+        [Display(Name = nameof(MovieBase.Title), ResourceType = typeof(BasicRes))]
+        public virtual string Title { get; set; }
 
+        [Display(Name = "Genre", ResourceType = typeof(BasicRes))]
         public virtual int GenreId { get; set; }
+
+        [Display(Name = "MediumType", ResourceType = typeof(BasicRes))]
         public virtual string? MediumTypeCode { get; set; }
 
+        [Display(Name = nameof(MovieBase.Price), ResourceType = typeof(BasicRes))]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N}")]
         public virtual decimal Price { get; set; }
-        public virtual DateTime ReleaseDate { get; set; }
 
+        [Display(Name = nameof(MovieBase.ReleaseDate), ResourceType = typeof(BasicRes))]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public virtual DateTime ReleaseDate { get; set; }
+        
+        [Display(Name = "Ratings", ResourceType = typeof(BasicRes))]
         public virtual Ratings Rating { get; set; } = 0;
     }
 }

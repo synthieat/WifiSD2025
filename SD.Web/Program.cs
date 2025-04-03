@@ -1,6 +1,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SD.Application.Movies;
+using SD.Persistence.Repositories.DBContext;
+using SD.Persistence.Extensions;
+using SD.Application.Extensions;
 using SD.Web.Data;
+using System.Reflection;
+using SD.Resources.Attributes;
+using SD.Resources;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +17,28 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+var MovieDbConnectionString = builder.Configuration.GetConnectionString("MovieDbContext") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+builder.Services.AddDbContext<MovieDbContext>(options =>
+    options.UseSqlServer(MovieDbConnectionString));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.RegisterRepositories();
+builder.Services.RegisterApplicationServices();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(MovieQueryHandler).GetTypeInfo().Assembly));
+
+/* Möglichkeit für Speichern in serverseitigen Sessions hinzufügen*/
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+});
+
 
 var app = builder.Build();
 
@@ -35,9 +61,14 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+/* Damit ich Sessions auch tatsächlich verwenden kann */
+app.UseSession();
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Movies}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+LocalizedDescriptionAttribute.Setup(new System.Resources.ResourceManager(typeof(BasicRes)));
 
 app.Run();

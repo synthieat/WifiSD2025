@@ -50,8 +50,9 @@ namespace SD.Application.Movies
                                                  .Where(w => (!request.GenreId.HasValue || w.GenreId == request.GenreId) &&
                                                        (string.IsNullOrWhiteSpace(request.MediumTypeCode) || w.MediumTypeCode.Contains(request.MediumTypeCode)) &&
                                                        (string.IsNullOrWhiteSpace(request.SearchText) || w.Title.Contains(request.SearchText)))
-                                                 .Take(request.Take) /* Pagination Take / Skip */
-                                                 .Skip(request.Skip);
+                                                 .Skip(request.Skip) /* Pagination Skip / Take
+                                                                        Achtung: Immer zuerst Skip, dann Take, sonst wird SQL TOP genommen */
+                                                 .Take(request.Take); 
 
             var result = await movieQuery.Select(s => MovieDto.MapFrom(s))
                                          .ToListAsync(cancellationToken);

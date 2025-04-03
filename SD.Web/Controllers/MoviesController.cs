@@ -5,12 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using SD.Common.Extensions;
+using SD.Core.Application.Commands;
+using SD.Core.Application.Queries;
 using SD.Core.Entities.Movies;
 using SD.Persistence.Repositories.DBContext;
+using SD.Web.Extensions;
 
 namespace SD.Web.Controllers
 {
-    public class MoviesController : Controller
+    public class MoviesController : MediatRBaseController
     {
         private readonly MovieDbContext _context;
 
@@ -20,36 +24,24 @@ namespace SD.Web.Controllers
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery]GetMovieDtosQuery query, CancellationToken cancellationToken)
         {
-            var movieDbContext = _context.Movies.Include(m => m.Genre).Include(m => m.MediumType);
-            return View(await movieDbContext.ToListAsync());
+            var movieDtos = await base.Mediator.Send(query, cancellationToken);
+            return View(movieDtos);
         }
 
         // GET: Movies/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(GetMovieDtoQuery query, CancellationToken cancellationToken)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var movie = await _context.Movies
-                .Include(m => m.Genre)
-                .Include(m => m.MediumType)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
-
-            return View(movie);
+            var movieDto = await base.Mediator.Send(query, cancellationToken);
+            return View(movieDto);
         }
 
         // GET: Movies/Create
         public IActionResult Create()
         {
             ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name");
+            //ViewBag.GenreId = new SelectList(_context.Genres, "Id", "Name");
             ViewData["MediumTypeCode"] = new SelectList(_context.MediumTypes, "Code", "Code");
             return View();
         }
@@ -59,18 +51,13 @@ namespace SD.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,GenreId,MediumTypeCode,Price,ReleaseDate,Rating")] Movie movie)
+        public async Task<IActionResult> Create(CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
-            {
-                movie.Id = Guid.NewGuid();
-                _context.Add(movie);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
-            ViewData["MediumTypeCode"] = new SelectList(_context.MediumTypes, "Code", "Code", movie.MediumTypeCode);
-            return View(movie);
+            var movieDto = await base.Mediator.Send(new CreateMovieDtoCommand(), cancellationToken);
+            movieDto.Title = string.Empty;
+            await this.InitMovieDtoNavigationProperties(movieDto.GenreId, movieDto.MediumTypeCode, movieDto.Rating, cancellationToken);
+            
+            return View(movieDto);
         }
 
         // GET: Movies/Edit/5
@@ -166,6 +153,39 @@ namespace SD.Web.Controllers
         private bool MovieExists(Guid id)
         {
             return _context.Movies.Any(e => e.Id == id);
+        }
+
+        private async Task InitMovieDtoNavigationProperties(int? genreId, string mediumTypeCode = default, Ratings? rating = default, 
+                                                           CancellationToken cancellationToken = default)
+        {
+            var genres = HttpContext.Session.Get<IEnumerable<Genre>>(nameof(Genre));
+            if (genres == null)
+            {
+                genres = await base.Mediator.Send(new GetGernesQuery(), cancellationToken);
+                HttpContext.Session.Set(nameof(Genre), genres);
+            }
+            var genreSelectList = new SelectList(genres, nameof(Genre.Id), nameof(Genre.Name), genreId);
+
+            var mediumTypes = HttpContext.Session.Get<IEnumerable<MediumType>>(nameof(MediumType));
+            if (mediumTypes == null)
+            {
+                mediumTypes = await base.Mediator.Send(new GetMediumTypesQuery(), cancellationToken);
+                HttpContext.Session.Set(nameof(MediumType), mediumTypes);
+            }
+            var mediumTypeSelectList = new SelectList(mediumTypes, nameof(MediumType.Code), nameof(MediumType.Name), mediumTypeCode);
+
+            var localizedRatings = HttpContext.Session.Get<IEnumerable<KeyValuePair<object, string>>>(nameof(Ratings));
+            if(localizedRatings == null)
+            {
+                localizedRatings = EnumExtension.EnumToList<Ratings>();
+                HttpContext.Session.Set<IEnumerable<KeyValuePair<object, string>>>(nameof(Ratings), localizedRatings);
+            }
+            var localizedRatingsSelectList = new SelectList(localizedRatings, "Key", "Value", rating);
+
+            ViewData[nameof(Genre)] = genreSelectList;
+            ViewBag.MediumType = mediumTypeSelectList;
+            ViewBag.Ratings = localizedRatingsSelectList;
+
         }
     }
 }
