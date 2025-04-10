@@ -20,3 +20,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+dt {
+    font-weight: 700;
+    color: darkblue;
+}

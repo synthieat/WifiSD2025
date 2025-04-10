@@ -8,6 +8,9 @@ using SD.Web.Data;
 using System.Reflection;
 using SD.Resources.Attributes;
 using SD.Resources;
+using System.Globalization;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +42,25 @@ builder.Services.AddSession(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
 });
 
+/* Browser-Spracherkennung implementieren */
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new List<CultureInfo>
+                {
+                    new("de"),
+                    new("de-AT"),
+                    new("de-DE"),
+                    new("de-CH"),
+                    new("en")
+                };
+
+    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("de");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
+
+builder.Services.AddRazorPages()
+                .AddRazorRuntimeCompilation();
 
 var app = builder.Build();
 
@@ -63,6 +85,10 @@ app.UseAuthorization();
 
 /* Damit ich Sessions auch tatsächlich verwenden kann */
 app.UseSession();
+
+/* Browser-Spracherkennung aktivieren */
+var options = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
+app.UseRequestLocalization(options.Value);
 
 app.MapControllerRoute(
     name: "default",

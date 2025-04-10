@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using SD.Application.Authentication;
 using SD.Application.Extensions;
@@ -9,6 +10,7 @@ using SD.Persistence.Extensions;
 using SD.Persistence.Repositories.DBContext;
 using SD.Resources;
 using SD.Resources.Attributes;
+using System.Globalization;
 using System.Reflection;
 
 namespace SD.WS
@@ -81,6 +83,8 @@ namespace SD.WS
 
             var app = builder.Build();
 
+            
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -92,6 +96,10 @@ namespace SD.WS
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+
+
+       
 
             app.MapControllers();
 

@@ -37,6 +37,7 @@ namespace SD.Web.Controllers
             return View(movieDto);
         }
 
+        /* Nicht notwendig, weil mit POST immer eine neue Movie Entität angelegt wird
         // GET: Movies/Create
         public IActionResult Create()
         {
@@ -45,6 +46,7 @@ namespace SD.Web.Controllers
             ViewData["MediumTypeCode"] = new SelectList(_context.MediumTypes, "Code", "Code");
             return View();
         }
+        */
 
         // POST: Movies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
