@@ -9,8 +9,8 @@ namespace SD.Core.Application.Results
 {
     public class MovieDto : MovieBase
     {
-        public string GenreName { get; set; }
-        public string MediumTypeName { get; set; }  
+        public string? GenreName { get; set; }
+        public string? MediumTypeName { get; set; }  
         public string? LocalizedRating { get; set; }
 
         public static MovieDto MapFrom(Movie movie)

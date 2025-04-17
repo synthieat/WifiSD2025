@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SD.Common.Extensions;
 using SD.Core.Application.Commands;
 using SD.Core.Application.Queries;
+using SD.Core.Application.Results;
 using SD.Core.Entities.Movies;
 using SD.Persistence.Repositories.DBContext;
 using SD.Web.Extensions;
@@ -63,21 +64,24 @@ namespace SD.Web.Controllers
         }
 
         // GET: Movies/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(Guid? id, CancellationToken cancellationToken)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movies.FindAsync(id);
-            if (movie == null)
+            var query = new GetMovieDtoQuery { Id = id.Value };
+            var result = await base.Mediator.Send(query, cancellationToken);
+
+            if(result == null)
             {
                 return NotFound();
             }
-            ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
-            ViewData["MediumTypeCode"] = new SelectList(_context.MediumTypes, "Code", "Code", movie.MediumTypeCode);
-            return View(movie);
+
+            await this.InitMovieDtoNavigationProperties(result.GenreId, result.MediumTypeCode, result.Rating, cancellationToken);
+
+            return View(result);
         }
 
         // POST: Movies/Edit/5
@@ -85,9 +89,12 @@ namespace SD.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,GenreId,MediumTypeCode,Price,ReleaseDate,Rating")] Movie movie)
+        /* public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,GenreId,MediumTypeCode,Price,ReleaseDate,Rating")] Movie movie)
+           Bind bei DTO nicht notwendig, da nur Properties enthalten sind, die man auch tatsächlich ändern kann 
+         */
+        public async Task<IActionResult> Edit([FromRoute]Guid id, MovieDto movieDto, CancellationToken cancellationToken)
         {
-            if (id != movie.Id)
+            if (id != movieDto.Id)
             {
                 return NotFound();
             }
@@ -96,25 +103,18 @@ namespace SD.Web.Controllers
             {
                 try
                 {
-                    _context.Update(movie);
-                    await _context.SaveChangesAsync();
+                    var command = new UpdateMovieDtoCommand { Id = id, MovieDto = movieDto };
+                    await base.Mediator.Send(command, cancellationToken);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch 
                 {
-                    if (!MovieExists(movie.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenreId"] = new SelectList(_context.Genres, "Id", "Name", movie.GenreId);
-            ViewData["MediumTypeCode"] = new SelectList(_context.MediumTypes, "Code", "Code", movie.MediumTypeCode);
-            return View(movie);
+
+            await this.InitMovieDtoNavigationProperties(movieDto.GenreId, movieDto.MediumTypeCode, movieDto.Rating, cancellationToken);
+            return View(movieDto);
         }
 
         // GET: Movies/Delete/5
