@@ -1,2 +1,23 @@
 ﻿<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<environment include="Development">
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</environment>
+
+<!-- CLDR -->
+<script src="~/lib/cldr.0.5.1/cldr.js"></script>
+<script src="~/lib/cldr.0.5.1/cldr/event.js"></script>
+<script src="~/lib/cldr.0.5.1/cldr/supplemental.js"></script>
+
+<!-- CLDR Data download-->
+https://github.com/unicode-org/cldr-json/releases/tag/47.0.0
+
+<!-- CLDR Unicode Common Locale Data Repository -->
+<script src="~/lib/globalize.1.4.2/globalize.js"></script>
+<script src="~/lib/globalize.1.4.2/globalize/date.js"></script>
+<script src="~/lib/globalize.1.4.2/globalize/number.js"></script>
+
+

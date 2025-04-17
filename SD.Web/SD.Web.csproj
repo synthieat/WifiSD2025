@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="cldrjs" Version="0.5.1" />
+    <PackageReference Include="jquery-globalize" Version="1.4.2" />
+    <PackageReference Include="jQuery.Validation.Globalize" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.13" />
@@ -23,6 +26,10 @@
   <ItemGroup>
     <ProjectReference Include="..\SD.Application\SD.Application.csproj" />
     <ProjectReference Include="..\SD.Resources\SD.Resources.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\cldr-data\main\de\" />
   </ItemGroup>
 
 </Project>
