@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = BasicRes.New;
+    //ViewData["LocaleName"] = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    ViewBag.LocaleName = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
 }
 
 <h1>@BasicRes.New</h1>
