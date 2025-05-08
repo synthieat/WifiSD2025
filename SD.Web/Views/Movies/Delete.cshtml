@@ -1,48 +1,48 @@
-﻿@model SD.Core.Entities.Movies.Movie
+﻿@model MovieDto
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = BasicRes.Delete;
 }
 
-<h1>Delete</h1>
+<h1>@BasicRes.Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>@BasicRes.DeleteQuestion</h3>
 <div>
     <h4>Movie</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Genre)
+            @BasicRes.Genre
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genre.Name)
+            @Html.DisplayFor(model => model.GenreName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MediumType)
+            @BasicRes.MediumType
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MediumType.Code)
+            @Html.DisplayFor(model => model.MediumTypeName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
+            @BasicRes.Title
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
+            @BasicRes.Price
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Price)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReleaseDate)
+            @BasicRes.ReleaseDate
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ReleaseDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Rating)
+            @BasicRes.Ratings
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Rating)
@@ -51,7 +51,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="@BasicRes.Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">@BasicRes.BackToList</a>
     </form>
 </div>

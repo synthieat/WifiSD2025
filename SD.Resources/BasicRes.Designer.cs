@@ -61,11 +61,29 @@ namespace SD.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back to List.
+        /// </summary>
+        public static string BackToList {
+            get {
+                return ResourceManager.GetString("BackToList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this?.
+        /// </summary>
+        public static string DeleteQuestion {
+            get {
+                return ResourceManager.GetString("DeleteQuestion", resourceCulture);
             }
         }
         

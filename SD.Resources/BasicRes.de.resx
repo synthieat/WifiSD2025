@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BackToList" xml:space="preserve">
+    <value>Zur Übersicht</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Entfernen</value>
+  </data>
+  <data name="DeleteQuestion" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie diesen Datensatz löschen wollen?</value>
   </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>

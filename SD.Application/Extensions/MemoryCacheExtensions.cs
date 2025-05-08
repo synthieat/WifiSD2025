@@ -27,7 +27,7 @@ namespace SD.Application.Extensions
             if (!memoryCache.TryGetValue(key, out T result))
             {
                 result = callback();
-                memoryCache.SetValueByAbsoluteExpiration(key, result, absoluteExpirationRelativeToNow);
+                memoryCache.SetValueByAbsoluteExpiration(key, callback, absoluteExpirationRelativeToNow);
             }
 
             return result;
@@ -41,7 +41,7 @@ namespace SD.Application.Extensions
                 try
                 {
                     callResult = await callback();
-                    memoryCache.SetValueByAbsoluteExpiration(key, result, absoluteExpirationRelativeToNow);
+                    memoryCache.SetValueByAbsoluteExpiration(key, callResult, absoluteExpirationRelativeToNow);
                     result = callResult;
                 }
                 catch

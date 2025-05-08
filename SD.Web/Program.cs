@@ -62,6 +62,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 builder.Services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
 
+builder.Services.AddMemoryCache();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

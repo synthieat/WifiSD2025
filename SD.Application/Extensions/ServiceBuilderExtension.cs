@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SD.Application.Services;
 using SD.Core.Attributes;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,9 @@ namespace SD.Application.Extensions
                 .AsSelf()
                 .WithScopedLifetime()
             );
+
+            /* Adding ApplicationCacheService */
+            services.AddTransient<IApplicationCacheService, ApplicationCacheService>();
             
         }
     }
